@@ -25,13 +25,11 @@ export const POST = async req => {
             where: {
                 email: email,
                 password: password
+            },
+            include: {
+                settings: true
             }
         })
-        const data2 = await prisma.userSettings.findUnique({
-            where: {
-                userId: data.id
-            }
-        })
-        return NextResponse.json({data,data2})
+        return NextResponse.json({data})
     }
 }
