@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react"
 
-const Login = ({mode, setMode}) => {
+const Login = ({mode, setMode, setUserData}) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [nickname, setNickname] = useState("")
@@ -25,6 +25,18 @@ const Login = ({mode, setMode}) => {
     fetch('/api/users', {
         method: 'POST',
         body: JSON.stringify(body)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(mode === 'login'){
+            console.log(data)
+            setUserData(data)
+            setMode("game")
+        }
+        if(mode === 'register'){
+            console.log(data)
+            setMode("login")
+        }
     })
   }
 
