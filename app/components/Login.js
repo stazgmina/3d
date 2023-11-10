@@ -6,6 +6,8 @@ const Login = ({mode, setMode, setUserData}) => {
   const [password, setPassword] = useState("")
   const [nickname, setNickname] = useState("")
   const [chColor, setChColor] = useState("")
+
+  const [error, setError] = useState('')
     
   const handleChangeMode = () => {
     if(mode === "login")setMode("register")
@@ -37,17 +39,17 @@ const Login = ({mode, setMode, setUserData}) => {
             console.log(data)
             setMode("login")
         }
-    })
+    }).catch(err => console.log(err))
   }
 
   return (
     <main className="grid w-screen h-screen place-content-center">
     <form className="flex flex-col gap-4 p-4 rounded-md bg-slate-400">
-      <input onChange={e=>setEmail(e.target.value)} className="p-2 text-black rounded-md" type="text" placeholder="E-mail"/>
-      <input onChange={e=>setPassword(e.target.value)} className="p-2 text-black rounded-md" type="password" placeholder="Password"/>
+      <input onChange={e=>setEmail(e.target.value)} required className="p-2 text-black rounded-md" type="text" placeholder="E-mail"/>
+      <input onChange={e=>setPassword(e.target.value)} required className="p-2 text-black rounded-md" type="password" placeholder="Password"/>
       {mode === "register" && (
         <>
-            <input onChange={e=>setNickname(e.target.value)} className="p-2 text-black rounded-md" type="text" placeholder="Nickname"/>
+            <input onChange={e=>setNickname(e.target.value)} required className="p-2 text-black rounded-md" type="text" placeholder="Nickname"/>
             <section className="flex items-center justify-between w-full">
                 <p>Character color:</p>
                 <input onChange={e=>setChColor(e.target.value)} className="p-2 text-black rounded-md" type="color"/>
