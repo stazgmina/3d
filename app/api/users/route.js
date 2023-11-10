@@ -41,17 +41,8 @@ export const POST = async req => {
         return NextResponse.json({ user: rest, message: "User created!"},{ status: 201 })
     }
     if(mode === "login"){
-        const {email, password} = body
-        const hash = await bcrypt.compare(password)
-        const data = await prisma.user.findUnique({
-            where: {
-                email: email,
-                password: hash
-            },
-            include: {
-                settings: true
-            }
-        })
+
+        // CHUJ KUYRWA
 
         return NextResponse.json({id: data.id, email: data.email, nickname: data.nickname, color: data.settings.color })
     }
