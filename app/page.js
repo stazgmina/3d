@@ -23,17 +23,17 @@ const Page = () => {
     <div>
       {mode === "login" && <Login mode="login" setMode={setMode} setUserData={setUserData}/>}
       {mode === "register" && <Login mode="register" setMode={setMode}/>}
-      {/* {(userData && userData != null && mode === 'game') && (
+      {(userData && userData != null && mode === 'game') && (
         <div className="absolute top-0 left-0 grid w-screen h-screen place-items-center">
           <Canvas>
             <OrbitControls/>
             <ambientLight intensity={0.5}/>
             <Sky sunPosition={[100,100,20]}/>
-            <Box color={userData.data.settings.color || 'red'} position={[-1.2, 0, 0]}/>
+            <Box color={userData.color || 'red'} position={[-1.2, 0, 0]}/>
             <Box position={[1.2, 0, 0]}/>
           </Canvas>
         </div>
-      )} */}
+      )}
     </div>
   )
 }
