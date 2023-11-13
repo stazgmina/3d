@@ -43,7 +43,7 @@ const Login = ({mode, setMode, setUserData}) => {
           if(mode === 'login'){
             console.log(user)
             setUserData(user)
-            setMode(user)
+            setMode('game')
           }
         })
       }
