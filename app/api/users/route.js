@@ -59,7 +59,8 @@ export const POST = async req => {
             const {password, ...rest} = existingUser
             return NextResponse.json({rest},{status: 200})
         }catch(error){
-            
+            const errors = getValErrMsg(error)
+            return NextResponse.json({errors}, {status: 409})
         }
     }
 }
