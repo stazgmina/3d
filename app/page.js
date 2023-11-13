@@ -9,10 +9,10 @@ import { OrbitControls, Sky } from "@react-three/drei"
 const Page = () => {
   const [mode, setMode] = useState("login") // default login
   const [userData, setUserData] = useState('') // default ""
-  const [x, setX] = useState(-1.2)
+  let [x, setX] = useState(2)
 
   const handleMove = e => {
-    setX(x++)
+    setX(prev=>prev)
   }
 
   function Box(props){
