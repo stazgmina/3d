@@ -15,3 +15,5 @@ improve game features
 owasp
 
 bots injections xss
+
+divide boxes to player and others
