@@ -29,7 +29,8 @@ const Page = () => {
             <OrbitControls/>
             <ambientLight intensity={0.5}/>
             <Sky sunPosition={[100,100,20]}/>
-            <Box color={userData.settings.color || 'red'} position={[-1.2, 0, 0]}/>
+            {console.log(userData)}
+            <Box color={userData.rest.settings.color || 'red'} position={[-1.2, 0, 0]}/>
             <Box position={[1.2, 0, 0]}/>
           </Canvas>
         </div>
