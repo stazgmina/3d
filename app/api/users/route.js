@@ -53,7 +53,7 @@ export const POST = async req => {
             const existingUser = await prisma.user.findFirst({where: {email: body.email} }).catch(err=>console.log(err))
             if(!existingUser) return NextResponse.json({message: 'User not found'}, {status: 409})
 
-            const passwordMatch = bcrypt.compare(body.password, existingUser.password)
+            const passwordMatch = await bcrypt.compare(body.password, existingUser.password)
             if(!passwordMatch) return NextResponse.json({message: 'Incorrect password'}, {status: 409})
 
             const {password, ...rest} = existingUser
