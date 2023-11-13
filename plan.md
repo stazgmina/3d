@@ -11,3 +11,7 @@ eventual rooms
 user settings customization
 
 improve game features
+
+owasp
+
+bots injections xss
