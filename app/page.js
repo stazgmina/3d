@@ -9,6 +9,11 @@ import { OrbitControls, Sky } from "@react-three/drei"
 const Page = () => {
   const [mode, setMode] = useState("login") // default login
   const [userData, setUserData] = useState('') // default ""
+  const [x, setX] = useState(-1.2)
+
+  const handleMove = e => {
+    setX(x++)
+  }
 
   function Box(props){
     return(
@@ -20,7 +25,7 @@ const Page = () => {
   }
 
   return (
-    <div>
+    <div onKeyDown={e=>handleMove(e)}>
       {mode === "login" && <Login mode="login" setMode={setMode} setUserData={setUserData}/>}
       {mode === "register" && <Login mode="register" setMode={setMode}/>}
       {(userData && userData != null && mode === 'game') && (
@@ -30,7 +35,7 @@ const Page = () => {
             <ambientLight intensity={0.5}/>
             <Sky sunPosition={[100,100,20]}/>
             {console.log(userData)}
-            <Box color={userData.rest.settings.color || 'red'} position={[-1.2, 0, 0]}/>
+            <Box color={userData.rest.settings.color || 'red'} position={[x, 0, 0]}/>
             <Box position={[1.2, 0, 0]}/>
           </Canvas>
         </div>
