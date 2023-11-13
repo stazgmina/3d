@@ -1,3 +1,5 @@
+NextAuth
+
 game logic moving cube on x axis
 
 Socket io
