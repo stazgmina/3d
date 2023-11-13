@@ -28,28 +28,40 @@ const Login = ({mode, setMode, setUserData}) => {
         method: 'POST',
         body: JSON.stringify(body)
     })
-    .then(res => res.json())
-    .then(data => {
-        if(mode === 'login'){
-            console.log(data)
-            setUserData(data)
-            setMode("game")
-        }
-        if(mode === 'register'){
-            console.log(data)
-            setMode("login")
-        }
-    }).catch(err => console.log(err))
+    .then(res => {
+      if(!res.ok){
+        return res.json()
+        .then(error => setError(error))
+        .finally(console.log(error))
+      }else{
+        return res.json()
+        .then(user => {
+          if(mode === 'register'){
+            console.log(user)
+            setMode('login')
+          }
+          if(mode === 'login'){
+            console.log(user)
+            setUserData(user)
+            setMode(user)
+          }
+        })
+      }
+    })
   }
 
   return (
     <main className="grid w-screen h-screen place-content-center">
     <form className="flex flex-col gap-4 p-4 rounded-md bg-slate-400">
-      <input onChange={e=>setEmail(e.target.value)} required className="p-2 text-black rounded-md" type="text" placeholder="E-mail"/>
-      <input onChange={e=>setPassword(e.target.value)} required className="p-2 text-black rounded-md" type="password" placeholder="Password"/>
+      <input onChange={e=>setEmail(e.target.value)}  className="p-2 text-black rounded-md" type="text" placeholder="E-mail"/>
+      {error.errors && <p className="text-red-500 text-sm">{error.errors.email[0]}</p>}
+      {error.message && <p className="text-red-500 text-sm">{error.message}</p>}
+      <input onChange={e=>setPassword(e.target.value)}  className="p-2 text-black rounded-md" type="password" placeholder="Password"/>
+      {error.errors && <p className="text-red-500 text-sm">{error.errors.password[0]}</p>}
       {mode === "register" && (
         <>
-            <input onChange={e=>setNickname(e.target.value)} required className="p-2 text-black rounded-md" type="text" placeholder="Nickname"/>
+            <input onChange={e=>setNickname(e.target.value)}  className="p-2 text-black rounded-md" type="text" placeholder="Nickname"/>
+            {error.errors && <p className="text-red-500 text-sm">{error.errors.nickname[0]}</p>}
             <section className="flex items-center justify-between w-full">
                 <p>Character color:</p>
                 <input onChange={e=>setChColor(e.target.value)} className="p-2 text-black rounded-md" type="color"/>
