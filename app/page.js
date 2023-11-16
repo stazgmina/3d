@@ -1,18 +1,40 @@
 'use client'
+import { useEffect, useState } from "react"
 
-import Link from "next/link"
-import Login from "./components/Login"
-import { useState } from "react"
-import { Canvas } from "@react-three/fiber"
+import { io } from "socket.io-client"
+
+import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Sky } from "@react-three/drei"
+
+import Login from "../components/Login"
 
 const Page = () => {
   const [mode, setMode] = useState("login") // default login
   const [userData, setUserData] = useState('') // default ""
-  let [x, setX] = useState(2)
+  const [players, setPlayers] = useState([])
+  const [tab, setTab] = useState(false)
 
-  const handleMove = e => {
-    setX(prev=>prev)
+  const socket = io('http://localhost:3003')
+
+  useEffect(()=>{
+    if(mode === "game" && userData){
+      console.log(userData)
+      socket.emit("login", JSON.stringify({
+        id: userData.rest.id,
+        nick: userData.rest.nickname,
+        color: userData.rest.settings.color
+      }))
+    } 
+    socket.on('update', players => setPlayers(players))
+
+    return () => {
+      socket.disconnect()
+    }
+  },[mode])
+
+  const handleKeyDown = e => {
+    if(e.key === "Tab") setTab(!tab)
+    console.log(tab)
   }
 
   function Box(props){
@@ -25,18 +47,27 @@ const Page = () => {
   }
 
   return (
-    <div onKeyDown={e=>handleMove(e)}>
+    <div tabIndex="0" onKeyDown={handleKeyDown}>
       {mode === "login" && <Login mode="login" setMode={setMode} setUserData={setUserData}/>}
       {mode === "register" && <Login mode="register" setMode={setMode}/>}
       {(userData && userData != null && mode === 'game') && (
         <div className="absolute top-0 left-0 grid w-screen h-screen place-items-center">
-          <Canvas>
+            {players && tab ? (
+              <div className="absolute z-10 top-5 left-5 bg-black/25 p-2">
+                {players.map(player => (
+                  <p key={player.id} style={{color: player.color}}>{player.id}: {player.nick}</p>
+                ))}
+              </div>
+            ):''}
+          <Canvas className="z-0">
             <OrbitControls/>
-            <ambientLight intensity={0.5}/>
             <Sky sunPosition={[100,100,20]}/>
-            {console.log(userData)}
-            <Box color={userData.rest.settings.color || 'red'} position={[x, 0, 0]}/>
-            <Box position={[1.2, 0, 0]}/>
+            <ambientLight intensity={0.5}/>
+            {/* <Box color={userData?.rest?.settings.color || 'red'} position={[0, 0, 0]}/>
+            <Box position={[1.2, 0, 0]}/> */}
+            {players && players.map((player, index) => (
+              <Box key={index} color={player.color || 'yellow'} position={[index*1.5,0,0]} />
+            ))}
           </Canvas>
         </div>
       )}
