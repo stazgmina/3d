@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { io } from "socket.io-client"
 
@@ -7,6 +7,7 @@ import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Sky } from "@react-three/drei"
 
 import Login from "../components/Login"
+import Player from "@/components/Player"
 
 const Page = () => {
   const [mode, setMode] = useState("login") // default login
@@ -37,15 +38,6 @@ const Page = () => {
     console.log(tab)
   }
 
-  function Box(props){
-    return(
-      <mesh {...props}>
-        <boxGeometry args={[1, 1, 1]}/>
-        <meshLambertMaterial attach="material" color={props.color || 'blue'}/>
-      </mesh>
-    )
-  }
-
   return (
     <div tabIndex="0" onKeyDown={handleKeyDown}>
       {mode === "login" && <Login mode="login" setMode={setMode} setUserData={setUserData}/>}
@@ -66,7 +58,7 @@ const Page = () => {
             {/* <Box color={userData?.rest?.settings.color || 'red'} position={[0, 0, 0]}/>
             <Box position={[1.2, 0, 0]}/> */}
             {players && players.map((player, index) => (
-              <Box key={index} color={player.color || 'yellow'} position={[index*1.5,0,0]} />
+              <Player key={index} player={player} userData={userData} color={player.color || 'yellow'} position={[index*1.5,0,0]}/>
             ))}
           </Canvas>
         </div>
