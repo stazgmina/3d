@@ -28,14 +28,18 @@ const Page = () => {
     } 
     socket.on('update', players => setPlayers(players))
 
+    socket.on('updatePos', players => setPlayers(players))
+
     return () => {
       socket.disconnect()
     }
   },[mode])
 
   const handleKeyDown = e => {
-    if(e.key === "Tab") setTab(!tab)
-    console.log(tab)
+    if(e.key === "Tab"){
+      setTab(!tab)
+      console.log(tab)
+    } 
   }
 
   return (
@@ -55,10 +59,8 @@ const Page = () => {
             <OrbitControls/>
             <Sky sunPosition={[100,100,20]}/>
             <ambientLight intensity={0.5}/>
-            {/* <Box color={userData?.rest?.settings.color || 'red'} position={[0, 0, 0]}/>
-            <Box position={[1.2, 0, 0]}/> */}
             {players && players.map((player, index) => (
-              <Player key={index} player={player} userData={userData} color={player.color || 'yellow'} position={[index*1.5,0,0]}/>
+              <Player key={index} player={player} userData={userData.rest.id} color={player.color || 'yellow'} position={player.position} socket={socket}/>
             ))}
           </Canvas>
         </div>
